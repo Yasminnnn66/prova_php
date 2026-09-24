@@ -1,5 +1,7 @@
+
 <?php
 
+// classifica a produção com base no valor total
 function classificarProducao(float $valorTotal): string
 {
     if ($valorTotal < 5000) {
@@ -13,6 +15,7 @@ function classificarProducao(float $valorTotal): string
     return "PRODUÇÃO DE GRANDE PORTE.";
 }
 
+// exibe o resumo da cultura
 function exibirResumoCultura(string $cultura, float $quantidade, float $valorKg, float $valorTotal): void
 {
     echo "================================" . PHP_EOL;
@@ -26,13 +29,20 @@ function exibirResumoCultura(string $cultura, float $quantidade, float $valorKg,
     echo PHP_EOL;
 }
 
-function exibirResumoGeral(int $codigo, int $data, string $responsavel, int $qtdCulturas, float $quantidadeTotal, float $valorTotal): void
-{
+// exibe o resumo geral da colheita
+function exibirResumoGeral(
+    int $idColheita,
+    string $data,
+    string $responsavel,
+    int $qtdCulturas,
+    float $quantidadeTotal,
+    float $valorTotal
+): void {
     echo "================================" . PHP_EOL;
     echo "    RESUMO GERAL DA COLHEITA" . PHP_EOL;
     echo "================================" . PHP_EOL;
 
-    echo "Código da colheita: {$codigo}" . PHP_EOL;
+    echo "ID da colheita: {$idColheita}" . PHP_EOL;
     echo "Data: {$data}" . PHP_EOL;
     echo "Responsável: {$responsavel}" . PHP_EOL;
     echo "Quantidade de culturas: {$qtdCulturas}" . PHP_EOL;
@@ -41,8 +51,13 @@ function exibirResumoGeral(int $codigo, int $data, string $responsavel, int $qtd
     echo classificarProducao($valorTotal) . PHP_EOL;
 }
 
-function processarColheita(int $colheita, int $data, string $responsavel, int $qtdCultura): void
-{
+// processa a colheita
+function processarColheita(
+    int $idColheita,
+    string $data,
+    string $responsavel,
+    int $qtdCultura
+): void {
     if ($qtdCultura <= 0) {
         echo "Quantidade inválida" . PHP_EOL;
         return;
@@ -52,23 +67,38 @@ function processarColheita(int $colheita, int $data, string $responsavel, int $q
     $valorTotalColheita = 0.0;
 
     for ($i = 0; $i < $qtdCultura; $i++) {
+
         $cultura = readline("Informe a cultura: ");
         $quantidade = (float) readline("Informe a quantidade produzida em kg: ");
         $valorKg = (float) readline("Informe o valor estimado de venda (kg): ");
 
         $valorTotal = $quantidade * $valorKg;
+
         $quantidadeTotal += $quantidade;
         $valorTotalColheita += $valorTotal;
 
         exibirResumoCultura($cultura, $quantidade, $valorKg, $valorTotal);
     }
 
-    exibirResumoGeral($colheita, $data, $responsavel, $qtdCultura, $quantidadeTotal, $valorTotalColheita);
+    exibirResumoGeral(
+        $idColheita,
+        $data,
+        $responsavel,
+        $qtdCultura,
+        $quantidadeTotal,
+        $valorTotalColheita
+    );
 }
 
-$colheita = (int) readline("Informe qual é a colheita: ");
-$data = (int) readline("Data atual: ");
+// entrada dos dados
+$idColheita = (int) readline("Informe o ID da colheita: ");
+$data = readline("Data atual: ");
 $responsavel = readline("Responsável pelo lançamento: ");
 $qtdCultura = (int) readline("Quantidade de cultura: ");
 
-processarColheita($colheita, $data, $responsavel, $qtdCultura);
+processarColheita(
+    $idColheita,
+    $data,
+    $responsavel,
+    $qtdCultura
+);

@@ -1,27 +1,38 @@
 <?php
-$numero1 = (int) readline("Informe o primeiro número: ");
-$numero2 = (int) readline("Informe o segundo número: ");
-$operacao =  readline("Escolha uma operação: ");
+
+$input1 = readline("Informe o primeiro número: ");
+$input2 = readline("Informe o segundo número: ");
+
+// Valida se as entradas são números reais
+if (!is_numeric($input1) || !is_numeric($input2)) {
+    echo "Erro: Informe apenas números válidos." . PHP_EOL;
+    exit;
+}
+
+$numero1 = (float) $input1;
+$numero2 = (float) $input2;
+
+$operacao = readline("Escolha uma operação : ");
 
 switch ($operacao) {
-    case "+":
+    case '+':
         $resultado = $numero1 + $numero2;
         echo "Resultado da soma: " . $resultado . PHP_EOL;
         break;
-    case "-":
+    case '-':
         $resultado = $numero1 - $numero2;
         echo "Resultado da subtração: " . $resultado . PHP_EOL;
         break;
-    case "*":
+    case '*':
         $resultado = $numero1 * $numero2;
         echo "Resultado da multiplicação: " . $resultado . PHP_EOL;
         break;
-    case "/":
+    case '/':
         if ($numero2 != 0) {
             $resultado = $numero1 / $numero2;
             echo "Resultado da divisão: " . number_format($resultado, 2, ',', '.') . PHP_EOL;
         } else {
-            echo "Erro: Divisão por zero não é permitida." . PHP_EOL;
+            echo "Não é possível realizar a divisão por zero." . PHP_EOL;
         }
         break;
     default:
