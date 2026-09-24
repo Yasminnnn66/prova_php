@@ -1,4 +1,3 @@
-
 <?php
 
 // classifica a produção com base no valor total
@@ -16,7 +15,7 @@ function classificarProducao(float $valorTotal): string
 }
 
 // exibe o resumo da cultura
-function exibirResumoCultura(string $cultura, float $quantidade, float $valorKg, float $valorTotal): void
+function exibirResumoCultura(string $cultura, float $quantidade, float $valorKg, float $valorTotal)
 {
     echo "================================" . PHP_EOL;
     echo "      RESUMO COLHEITA" . PHP_EOL;
@@ -37,7 +36,7 @@ function exibirResumoGeral(
     int $qtdCulturas,
     float $quantidadeTotal,
     float $valorTotal
-): void {
+) {
     echo "================================" . PHP_EOL;
     echo "    RESUMO GERAL DA COLHEITA" . PHP_EOL;
     echo "================================" . PHP_EOL;
@@ -57,20 +56,35 @@ function processarColheita(
     string $data,
     string $responsavel,
     int $qtdCultura
-): void {
-    if ($qtdCultura <= 0) {
-        echo "Quantidade inválida" . PHP_EOL;
-        return;
-    }
-
-    $quantidadeTotal = 0.0;
-    $valorTotalColheita = 0.0;
+) {
+    $quantidadeTotal = 0;
+    $valorTotalColheita = 0;
 
     for ($i = 0; $i < $qtdCultura; $i++) {
 
         $cultura = readline("Informe a cultura: ");
-        $quantidade = (float) readline("Informe a quantidade produzida em kg: ");
-        $valorKg = (float) readline("Informe o valor estimado de venda (kg): ");
+
+        if ($cultura === "") {
+            echo "A cultura não pode ficar vazia." . PHP_EOL;
+            return;
+        }
+
+        $quantidade = readline("Informe a quantidade produzida em kg: ");
+
+        if ($quantidade === "" || !is_numeric($quantidade) || $quantidade <= 0) {
+            echo "Quantidade inválida." . PHP_EOL;
+            return;
+        }
+
+        $valorKg = readline("Informe o valor estimado de venda (kg): ");
+
+        if ($valorKg === "" || !is_numeric($valorKg) || $valorKg <= 0) {
+            echo "Valor por kg inválido." . PHP_EOL;
+            return;
+        }
+
+        $quantidade = (float) $quantidade;
+        $valorKg = (float) $valorKg;
 
         $valorTotal = $quantidade * $valorKg;
 
@@ -91,10 +105,37 @@ function processarColheita(
 }
 
 // entrada dos dados
-$idColheita = (int) readline("Informe o ID da colheita: ");
+$idColheita = readline("Informe o ID da colheita: ");
+
+if ($idColheita === "" || !is_numeric($idColheita)) {
+    echo "ID da colheita inválido." . PHP_EOL;
+    return;
+}
+
+$idColheita = (int) $idColheita;
+
 $data = readline("Data atual: ");
+
+if ($data === "") {
+    echo "A data não pode ficar vazia." . PHP_EOL;
+    return;
+}
+
 $responsavel = readline("Responsável pelo lançamento: ");
-$qtdCultura = (int) readline("Quantidade de cultura: ");
+
+if ($responsavel === "") {
+    echo "O responsável não pode ficar vazio." . PHP_EOL;
+    return;
+}
+
+$qtdCultura = readline("Quantidade de cultura: ");
+
+if ($qtdCultura === "" || !is_numeric($qtdCultura) || $qtdCultura <= 0) {
+    echo "Quantidade de culturas inválida." . PHP_EOL;
+    return;
+}
+
+$qtdCultura = (int) $qtdCultura;
 
 processarColheita(
     $idColheita,
